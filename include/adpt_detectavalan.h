@@ -29,7 +29,7 @@ private:
 						std::vector<t_AliveFunctionCall>& vec_alvfunc);
 	uint64_t get_index(std::string& rec);
 
-	void p_vec_alvfunc(std::vector<t_AliveFunctionCall>& vec_alvfunc);
+	void print_valvfunc(std::vector<t_AliveFunctionCall>& vec_alvfunc);
 };
 
 #endif

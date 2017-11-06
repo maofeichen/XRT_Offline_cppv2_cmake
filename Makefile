@@ -12,9 +12,11 @@ OBJS 	= xt_main.o xt_data.o xt_file.o xt_liveness.o \
 		TaintBitMap.o xt_detect.o RangeArray.o xt_ByteTaintPropagate.o \
 		xt_modedetect.o xt_blockdetect.o xt_blockmodedetector.o xt_cbcdetector.o
 
-OBJS_ADPT	= adpt_main.o adpt_detectavalan.o xt_file.o xt_liveness.o xt_preprocess.o xt_util.o \
+OBJS_ADPT	= adpt_main.o adpt_detectavalan.o \
+			  xt_file.o xt_liveness.o xt_preprocess.o xt_util.o \
 			  xt_functioncall.o xt_alivebuffer.o xt_node.o xt_record.o xt_searchavalanche.o \
-			  xt_log.o xt_propagate.o TaintBitMap.o xt_taintpropagate.o \
+			  xt_log.o xt_propagate.o TaintBitMap.o xt_detect.o RangeArray.o xt_ByteTaintPropagate.o \
+			  xt_taintpropagate.o xt_blockdetect.o xt_modedetect.o xt_blockmodedetector.o xt_cbcdetector.o \
 			  adpt_file.o adpt_alivefunc.o adpt_alivebuf.o 
 
 all : xt_main adpt_detector

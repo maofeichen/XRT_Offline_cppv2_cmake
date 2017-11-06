@@ -4,6 +4,7 @@
 #include "adpt_detectavalan.h"
 #include "adpt_file.h"
 
+#include "xt_detect.h"
 #include "xt_file.h"
 #include "xt_log.h"
 #include "xt_preprocess.h"
@@ -57,10 +58,13 @@ DetectAvalanche::detect()
    	AdptFile adptfl(lp_, bp_, od_, is_dump_, ct_);
    	adptfl.alvbuf_read(lst_alvfunc);
    	to_vec_alvfunc(lst_alvfunc, vec_alvfunc);
-   	p_vec_alvfunc(vec_alvfunc);
+   	// print_valvfunc(vec_alvfunc);
    	// for(auto it = lst_alvfunc.begin(); it != lst_alvfunc.end(); ++it) {
    	// 	it->print();
    	// }
+
+  Detect dtct(vec_alvfunc, olog, rlog);
+  dtct.adpt_detect_cipher();
 }
 
 void 
@@ -107,7 +111,7 @@ DetectAvalanche::get_index(std::string& rec)
 }
 
 void 
-DetectAvalanche::p_vec_alvfunc(std::vector<t_AliveFunctionCall>& vec_alvfunc)
+DetectAvalanche::print_valvfunc(std::vector<t_AliveFunctionCall>& vec_alvfunc)
 {
 	for(auto it = vec_alvfunc.begin(); it != vec_alvfunc.end(); ++it) {
 		cout << it->call_mark << endl;

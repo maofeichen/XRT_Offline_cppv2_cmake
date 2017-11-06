@@ -19,6 +19,7 @@ class Detect {
          std::vector<Record> log_rec);
 
   void detect_cipher();
+  void adpt_detect_cipher();
  private:
   XTLog xt_log_;
   std::vector<t_AliveFunctionCall> v_func_cont_buf_;
@@ -110,6 +111,12 @@ class Detect {
   bool detect_cipher_in_out(t_AliveContinueBuffer &in,
                             t_AliveContinueBuffer &out,
                             Propagate &propagate);
+
+  void adpt_find_cntnsbuf(std::vector<t_AliveContinueBuffer>& v_cntnsbuf,
+                          uint32_t addr,
+                          uint32_t sz);
+  void adpt_print_cntnsbuf(t_AliveContinueBuffer& buf);
+  void adpt_print_vcntnsbuf(std::vector<t_AliveContinueBuffer>& vbuf);
 };
 
 #endif /* XT_DETECT_H_ */

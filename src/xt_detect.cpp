@@ -7,6 +7,8 @@
 #include "xt_flag.h"
 #include "xt_util.h"
 
+#include "adpt_cons.h"
+
 #include <algorithm>
 #include <map>
 #include <string>
@@ -110,6 +112,34 @@ void Detect::detect_cipher() {
       }
     }
   }
+}
+
+void
+Detect::adpt_detect_cipher()
+{
+    cout << "adpt detecting ciphers ..." << endl;
+
+    uint32_t in_addr    = 0xde911000;
+    uint32_t in_sz      = 64;
+    uint32_t out_addr   = 0x804c170;
+    uint32_t out_sz     = 64;
+
+    Propagate propagate(xt_log_);
+
+    vector<t_AliveContinueBuffer> v_cntnsbuf_in;
+    vector<t_AliveContinueBuffer> v_cntnsbuf_out;
+
+    adpt_find_cntnsbuf(v_cntnsbuf_in, in_addr, in_sz*8);
+    adpt_find_cntnsbuf(v_cntnsbuf_out, out_addr, out_sz*8);
+
+    cout << "In Bufs: " << endl;
+    adpt_print_vcntnsbuf(v_cntnsbuf_in);
+    cout << "Out Bufs: " << endl;
+    adpt_print_vcntnsbuf(v_cntnsbuf_out);
+
+    // t_AliveContinueBuffer in;
+    // t_AliveContinueBuffer out;
+
 }
 
 inline unsigned long
@@ -726,4 +756,38 @@ bool Detect::detect_cipher_in_out(t_AliveContinueBuffer &in,
 
   block_detect.detect_mode_type_ori(v_in_taint_propagate, blocks);
   */
+}
+
+void 
+Detect::adpt_find_cntnsbuf(std::vector<t_AliveContinueBuffer>& v_cntnsbuf,
+                           uint32_t addr,
+                           uint32_t sz)
+{
+  for(auto it = v_func_cont_buf_.begin(); it != v_func_cont_buf_.end(); ++it) {
+    for(auto it_ab = it->vAliveContinueBuffer.begin(); it_ab != it->vAliveContinueBuffer.end(); ++it_ab) {
+      if(addr == it_ab->beginAddress && sz == it_ab->size) {
+        v_cntnsbuf.push_back(*it_ab);
+      }
+    }
+  } 
+}
+
+void 
+Detect::adpt_print_cntnsbuf(t_AliveContinueBuffer& buf)
+{
+  cout << "0x" << hex << buf.beginAddress 
+       << "\t" << dec << buf.size / 8 << "\tbytes" << endl;
+  for(auto it = buf.vNodeIndex.begin(); it != buf.vNodeIndex.end(); ++it) {
+    cout << *it << endl;
+  } 
+}
+
+void 
+Detect::adpt_print_vcntnsbuf(std::vector<t_AliveContinueBuffer>& vbuf)
+{
+  for(auto it = vbuf.begin(); it != vbuf.end(); ++it) {
+    cout << cons::dash_sprtr << endl;
+    adpt_print_cntnsbuf(*it);
+    cout << cons::dash_sprtr << endl;
+  }
 }
