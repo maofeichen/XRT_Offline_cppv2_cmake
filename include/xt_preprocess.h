@@ -19,6 +19,9 @@ class XT_PreProcess {
   std::vector<std::string> clean_empty_instruction_mark(std::vector<std::string> &s_vXTLog);
 
   std::vector<Record> convertToRec(std::vector<std::string> &log);
+  void convertToRec(std::vector<std::string> &slog,
+                    std::vector<Record>& rlog);
+
   std::vector<string> parseMemSizeInfo(std::vector<std::string> &v);
   std::vector<string> addRecordIndex(std::vector<std::string> &s_vXTLog);
  private:

@@ -1,6 +1,9 @@
 #include <iostream>
+#include "xt_data.h"
 #include "adpt_detectavalan.h"
 #include "xt_file.h"
+#include "xt_log.h"
+#include "xt_preprocess.h"
 
 using namespace std;
 
@@ -26,8 +29,17 @@ DetectAvalanche::detect()
     cout << "Is Dump: \t" << is_dump_ << endl;
    	cout << "Current Time: \t" << ct_ << endl;
 
-   	vector<string> log;
+   	vector<string> slog;
+   	vector<Record> rlog;
 
    	XT_File fl(lp_);
-   	fl.read(log);
+   	fl.read(slog);
+
+   	XTLog olog(slog);
+   	cout << "total xt log records:\t" << olog.getRecordSize() << endl;
+
+   	// converts string to Record format
+   	XT_PreProcess prprcss;
+   	prprcss.convertToRec(slog, rlog);
+   	cout << "total Record entries:\t" << rlog.size() << endl;
 }
