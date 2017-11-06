@@ -117,29 +117,37 @@ void Detect::detect_cipher() {
 void
 Detect::adpt_detect_cipher()
 {
-    cout << "adpt detecting ciphers ..." << endl;
+  cout << "adpt detecting ciphers ..." << endl;
 
-    uint32_t in_addr    = 0xde911000;
-    uint32_t in_sz      = 64;
-    uint32_t out_addr   = 0x804c170;
-    uint32_t out_sz     = 64;
+  uint32_t in_addr    = 0xde911000;
+  uint32_t in_sz      = 64;
+  uint32_t out_addr   = 0x804c170;
+  uint32_t out_sz     = 64;
 
-    Propagate propagate(xt_log_);
+  Propagate prpgt(xt_log_);
 
-    vector<t_AliveContinueBuffer> v_cntnsbuf_in;
-    vector<t_AliveContinueBuffer> v_cntnsbuf_out;
+  vector<t_AliveContinueBuffer> v_cntnsbuf_in;
+  vector<t_AliveContinueBuffer> v_cntnsbuf_out;
 
-    adpt_find_cntnsbuf(v_cntnsbuf_in, in_addr, in_sz*8);
-    adpt_find_cntnsbuf(v_cntnsbuf_out, out_addr, out_sz*8);
+  adpt_find_cntnsbuf(v_cntnsbuf_in, in_addr, in_sz*8);
+  adpt_find_cntnsbuf(v_cntnsbuf_out, out_addr, out_sz*8);
 
-    cout << "In Bufs: " << endl;
-    adpt_print_vcntnsbuf(v_cntnsbuf_in);
-    cout << "Out Bufs: " << endl;
-    adpt_print_vcntnsbuf(v_cntnsbuf_out);
+  // cout << "In Bufs: " << endl;
+  // adpt_print_vcntnsbuf(v_cntnsbuf_in);
+  // cout << "Out Bufs: " << endl;
+  // adpt_print_vcntnsbuf(v_cntnsbuf_out);
 
-    // t_AliveContinueBuffer in;
-    // t_AliveContinueBuffer out;
-
+  for(auto iin = v_cntnsbuf_in.begin(); iin != v_cntnsbuf_in.end(); ++iin) {
+    // for each input continuous buffer
+    for(auto iout = v_cntnsbuf_out.begin(); iout != v_cntnsbuf_out.end(); ++iout) {
+      cout << "In: " << endl;
+      adpt_print_cntnsbuf(*iin);
+      cout << "Out: " << endl;
+      adpt_print_cntnsbuf(*iout);
+      
+      detect_cipher_in_out(*iin, *iout, prpgt);
+    }
+  }
 }
 
 inline unsigned long
