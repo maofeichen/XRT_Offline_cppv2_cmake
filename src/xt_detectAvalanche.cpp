@@ -119,8 +119,8 @@ void XT_DetectAvalanche::detect_avalanche(string logPath, bool is_dump) {
   //    }
 
   // Detects after liveness analysis
-  //mc Detect det(v_alive_func, o_log, log_rec);
-  //mc det.detect_cipher();
+  Detect det(v_alive_func, o_log, log_rec);
+  det.detect_cipher();
 
 }
 

@@ -62,7 +62,7 @@ void XT_File::read(std::vector<std::string>& log)
             prev_line = curr_line;
             num_line++;
         }
-        cout << "total lines scanned: " << num_line << endl;
+        cout << "total log entries:\t" << num_line << endl;
     }
     else
         std::cout << "error open file: " << path_r << std::endl;

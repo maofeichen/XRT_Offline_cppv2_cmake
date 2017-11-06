@@ -12,7 +12,9 @@ OBJS 	= xt_main.o xt_data.o xt_file.o xt_liveness.o \
 		TaintBitMap.o xt_detect.o RangeArray.o xt_ByteTaintPropagate.o \
 		xt_modedetect.o xt_blockdetect.o xt_blockmodedetector.o xt_cbcdetector.o
 
-OBJS_ADPT	= adpt_main.o
+OBJS_ADPT	= adpt_main.o adpt_detectavalan.o xt_file.o xt_liveness.o xt_util.o \
+			  xt_functioncall.o xt_alivebuffer.o xt_node.o xt_record.o xt_searchavalanche.o \
+			  xt_log.o xt_propagate.o TaintBitMap.o xt_taintpropagate.o 
 
 all : xt_main adpt_detector
 
@@ -93,6 +95,9 @@ xt_blockmodedetector.o : src/xt_blockmodedetector.cpp
 
 xt_cbcdetector.o : src/xt_cbcdetector.cpp
 	$(CC) $(INC) -c src/xt_cbcdetector.cpp $(CFLAG)
+
+adpt_detectavalan.o : $(SRC)adpt_detectavalan.cpp
+	$(CC) $(INC) -c $(SRC)adpt_detectavalan.cpp $(CFLAG)
 
 .PHONY : clean
 clean :

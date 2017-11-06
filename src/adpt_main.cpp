@@ -1,8 +1,7 @@
 // Adapt the new liveness analysis result to original avalnche detection
 
 #include "boost/program_options.hpp"
-
-// #include "file.h"
+#include "adpt_detectavalan.h"
 
 using namespace boost;
 namespace po = boost::program_options;
@@ -22,13 +21,6 @@ get_time() {
 
   ct = "-" + ct;
   return ct;
-}
-
-void 
-analyze(string &fp, string& bp, string &od, bool &is_dump, string &ct){
-	// cout << "analyzing buffer liveness..." << endl;
-  	// xt::File file(fp, od, is_dump, ct);
-  	// file.cleanmerge_read();
 }
 
 int 
@@ -67,7 +59,9 @@ main(int argc, char *argv[]) {
 
     string ct = get_time();
 
-    analyze(lp, bp, od, is_dump, ct);
+
+	DetectAvalanche da(lp, bp, od, is_dump, ct);
+	da.detect();
 
   } else{
     cout << desc << endl;
