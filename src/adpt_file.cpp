@@ -21,7 +21,7 @@ AdptFile::AdptFile(std::string &lp,
 }
 
 void 
-AdptFile::buf_read(std::list<Alivefunc>& lst_alvfunc)
+AdptFile::alvbuf_read(std::list<Alivefunc>& lst_alvfunc)
 {
 	cout << "reading buffers from liveness analysis result: \n\t" 
 		 << bp_ << endl; 

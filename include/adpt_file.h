@@ -15,7 +15,7 @@ public:
 			 std::string &ct);
 	~AdptFile() {};
 
-	void buf_read(std::list<Alivefunc>& lst_alvfunc);
+	void alvbuf_read(std::list<Alivefunc>& lst_alvfunc);
 private:
 	std::string lp_;
 	std::string bp_;
