@@ -3,6 +3,8 @@ INC		= -Iinclude
 CFLAG	= -g -std=c++11 -Wall
 LFLAG	= -g -std=C++11 -Wall
 
+SRC 	= ./src/
+
 OBJS 	= xt_main.o xt_data.o xt_file.o xt_liveness.o \
 		xt_preprocess.o xt_propagate.o xt_searchavalanche.o \
 		xt_util.o xt_detectAvalanche.o xt_log.o xt_taintpropagate.o \
@@ -10,13 +12,21 @@ OBJS 	= xt_main.o xt_data.o xt_file.o xt_liveness.o \
 		TaintBitMap.o xt_detect.o RangeArray.o xt_ByteTaintPropagate.o \
 		xt_modedetect.o xt_blockdetect.o xt_blockmodedetector.o xt_cbcdetector.o
 
-all : xt_main 
+OBJS_ADPT	= adpt_main.o
+
+all : xt_main adpt_detector
 
 xt_main : $(OBJS)
 	$(CC) $(INC) -o ./bin/xt_main $(OBJS) $(CFLAG) -L/usr/local/lib/ -lboost_program_options 
 
+adpt_detector : $(OBJS_ADPT)
+	$(CC) $(INC) -o ./adpt_detector $(OBJS_ADPT) $(CFLAG) -L/usr/local/lib/ -lboost_program_options 
+
 xt_main.o : src/xt_main.cpp
 	$(CC) $(INC) -c src/xt_main.cpp $(CFLAG)
+
+adpt_main.o : $(SRC)adpt_main.cpp
+	$(CC) $(INC) -c $(SRC)adpt_main.cpp $(CFLAG) 
 
 xt_data.o : src/xt_data.cpp
 	$(CC) $(INC) -c src/xt_data.cpp $(CFLAG)
@@ -86,4 +96,4 @@ xt_cbcdetector.o : src/xt_cbcdetector.cpp
 
 .PHONY : clean
 clean :
-	-rm -f $(OBJS) ./bin/xt_main
+	-rm -f $(OBJS) ./bin/xt_main adpt_detector
