@@ -13,7 +13,7 @@ OBJS 	= xt_main.o xt_data.o xt_file.o xt_liveness.o \
 all : xt_main 
 
 xt_main : $(OBJS)
-	$(CC) $(INC) -o ./bin/xt_main $(OBJS) $(CFLAG) -lboost_program_options 
+	$(CC) $(INC) -o ./bin/xt_main $(OBJS) $(CFLAG) -L/usr/local/lib/ -lboost_program_options 
 
 xt_main.o : src/xt_main.cpp
 	$(CC) $(INC) -c src/xt_main.cpp $(CFLAG)

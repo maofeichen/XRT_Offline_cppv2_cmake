@@ -50,7 +50,7 @@ inline std::string XT_PreProcess::getBufSize(int iRecFlag, int &TCGEncode)
 		TCGEncode = flag::NUM_TCG_LD;
 	}
 	else
-		std::cout << "getBufSize(): unknown iRecFlag" << endl;
+		std::cout << "getBufSize()- unknown iRecFlag: " << std::hex << iRecFlag << endl;
 
 	switch(size){
 		case 1:
@@ -60,7 +60,7 @@ inline std::string XT_PreProcess::getBufSize(int iRecFlag, int &TCGEncode)
 		case 3:
 			return "32";
 		default:
-			std::cout << "getBufSize(): unknown size" << endl;
+			std::cout << "getBufSize()- unknown size: " << std::dec << size << endl;
 	}
 }
 

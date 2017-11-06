@@ -42,17 +42,20 @@ void XT_DetectAvalanche::detect_avalanche(string logPath, bool is_dump) {
 
   // Preprocess
   XT_PreProcess preproc;
-  v_s_log = preproc.clean_empty_instruction_mark(v_s_log);
+  //mc v_s_log = preproc.clean_empty_instruction_mark(v_s_log);
   cout << "num of entries after clean insn mark: " << v_s_log.size() << endl;
 
-  v_s_log = preproc.clean_function_call_mark(v_s_log);
+  //mc v_s_log = preproc.clean_function_call_mark(v_s_log);
+
   // v_s_log = preproc.clean_empty_function_mark(v_s_log);
   // v_s_log = preproc.clean_nonempty_function_mark(v_s_log);
+  /*mc
   if (is_dump) {
     xt_file.write(
         XT_RESULT_PATH + logPath + XT_PREPROCESS + c_time + XT_FILE_EXT,
         v_s_log);
   }
+  */
 
   // Add memory size infomation
   v_s_log = preproc.parseMemSizeInfo(v_s_log);
@@ -116,8 +119,8 @@ void XT_DetectAvalanche::detect_avalanche(string logPath, bool is_dump) {
   //    }
 
   // Detects after liveness analysis
-  Detect det(v_alive_func, o_log, log_rec);
-  det.detect_cipher();
+  //mc Detect det(v_alive_func, o_log, log_rec);
+  //mc det.detect_cipher();
 
 }
 

@@ -13,8 +13,8 @@ using namespace std;
 const string XT_FILE_EXT    = ".txt";
 //const string XT_FILE_PATH	= "/home/xtaint/Workplace/XRayTaint-OfflineAnalysis/test_file/";
 //const string XT_RESULT_PATH = "/home/xtaint/Workplace/XRayTaint-OfflineAnalysis/test_result/";
-const std::string XT_FILE_PATH  = "/home/xtaint/Workplace/XRayTaint/TestResult/";
-const std::string XT_RESULT_PATH  = "/home/xtaint/Workplace/XT_Test_Result/";
+const std::string XT_FILE_PATH  = "/home/xtaint/Workspace/XRayTaint/TestResult/";
+const std::string XT_RESULT_PATH  = "/home/xtaint/Workspace/XT_Test_Result/";
 
 
 const string XT_PREPROCESS      = "-preprocess";
