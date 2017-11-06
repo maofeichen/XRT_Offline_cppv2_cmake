@@ -1,6 +1,10 @@
+#include <list>
 #include <iostream>
-#include "xt_data.h"
+
 #include "adpt_detectavalan.h"
+#include "adpt_file.h"
+#include "adpt_alivefunc.h"
+#include "xt_data.h"
 #include "xt_file.h"
 #include "xt_log.h"
 #include "xt_preprocess.h"
@@ -31,6 +35,8 @@ DetectAvalanche::detect()
 
    	vector<string> slog;
    	vector<Record> rlog;
+	list<Alivefunc> lst_alvfunc;
+
 
    	XT_File fl(lp_);
    	fl.read(slog);
@@ -42,4 +48,13 @@ DetectAvalanche::detect()
    	XT_PreProcess prprcss;
    	prprcss.convertToRec(slog, rlog);
    	cout << "total Record entries:\t" << rlog.size() << endl;
+
+   	// no need slog, free
+   	slog.clear();
+
+   	AdptFile adptfl(lp_, bp_, od_, is_dump_, ct_);
+   	adptfl.buf_read(lst_alvfunc);
+   	for(auto it = lst_alvfunc.begin(); it != lst_alvfunc.end(); ++it) {
+   		it->print();
+   	}
 }

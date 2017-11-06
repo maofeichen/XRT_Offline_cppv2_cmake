@@ -14,7 +14,8 @@ OBJS 	= xt_main.o xt_data.o xt_file.o xt_liveness.o \
 
 OBJS_ADPT	= adpt_main.o adpt_detectavalan.o xt_file.o xt_liveness.o xt_preprocess.o xt_util.o \
 			  xt_functioncall.o xt_alivebuffer.o xt_node.o xt_record.o xt_searchavalanche.o \
-			  xt_log.o xt_propagate.o TaintBitMap.o xt_taintpropagate.o 
+			  xt_log.o xt_propagate.o TaintBitMap.o xt_taintpropagate.o \
+			  adpt_file.o adpt_alivefunc.o adpt_alivebuf.o 
 
 all : xt_main adpt_detector
 
@@ -99,6 +100,15 @@ xt_cbcdetector.o : src/xt_cbcdetector.cpp
 adpt_detectavalan.o : $(SRC)adpt_detectavalan.cpp
 	$(CC) $(INC) -c $(SRC)adpt_detectavalan.cpp $(CFLAG)
 
+adpt_file.o : $(SRC)adpt_file.cpp
+	$(CC) $(INC) -c $(SRC)adpt_file.cpp $(CFLAG)
+
+adpt_alivefunc.o : $(SRC)adpt_alivefunc.cpp
+	$(CC) $(INC) -c $(SRC)adpt_alivefunc.cpp $(CFLAG)
+
+adpt_alivebuf.o : $(SRC)adpt_alivebuf.cpp
+	$(CC) $(INC) -c $(SRC)adpt_alivebuf.cpp $(CFLAG)
+
 .PHONY : clean
 clean :
-	-rm -f $(OBJS) ./bin/xt_main adpt_detector
+	-rm -f $(OBJS) $(OBJS_ADPT) ./bin/xt_main adpt_detector
