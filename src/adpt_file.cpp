@@ -57,7 +57,7 @@ AdptFile::alvbuf_read(std::list<Alivefunc>& lst_alvfunc)
 void 
 AdptFile::init_alvfunc(std::list<Alivefunc>& lst_alvfunc)
 {
-	cout << "initing alive function call..." << endl;
+	// cout << "initing alive function call..." << endl;
 
 	Alivefunc alvfunc;
 	vector<string> v;

@@ -115,6 +115,9 @@ class Detect {
   void adpt_find_cntnsbuf(std::vector<t_AliveContinueBuffer>& v_cntnsbuf,
                           uint32_t addr,
                           uint32_t sz);
+  void adpt_find_cntnsbuf_by_sz(std::vector<t_AliveContinueBuffer>& v_cntnsbuf,
+                                uint32_t sz);
+  
   void adpt_print_cntnsbuf(t_AliveContinueBuffer& buf);
   void adpt_print_vcntnsbuf(std::vector<t_AliveContinueBuffer>& vbuf);
 };

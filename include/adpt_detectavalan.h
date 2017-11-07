@@ -30,6 +30,14 @@ private:
 	uint64_t get_index(std::string& rec);
 
 	void print_valvfunc(std::vector<t_AliveFunctionCall>& vec_alvfunc);
+	void helper_vec_alivefunc(std::vector<t_AliveFunctionCall>& vec_alvfunc);
+	void adpt_find_cntnsbuf(std::vector<t_AliveFunctionCall>& vec_alvfunc,
+							std::vector<t_AliveContinueBuffer>& v_cntnsbuf,
+                            uint32_t addr,
+                            uint32_t sz);
+  	void adpt_find_cntnsbuf_by_sz(std::vector<t_AliveFunctionCall>& vec_alvfunc,
+  								  std::vector<t_AliveContinueBuffer>& v_cntnsbuf,
+                                  uint32_t sz);
 };
 
 #endif

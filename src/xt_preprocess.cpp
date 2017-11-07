@@ -391,6 +391,31 @@ XT_PreProcess::convertToRec(std::vector<std::string> &slog,
     }
 }
 
+void 
+XT_PreProcess::convertToRec(XTLog& olog, 
+                            std::vector<Record>& rlog)
+{
+    cout << "converting XTLog entries to Record format..." << endl;
+
+    Record rec;
+
+    uint64_t logsz = olog.getRecordSize();
+    for(uint64_t i = 0; i < logsz; i++) {
+        XTRecord xtrec = olog.getRecord(i);
+        string srec     = xtrec.get_str_rec();
+        // cout << srec << endl;
+
+        vector<string> vrec = XT_Util::split(srec.c_str(), '\t');
+        if(XT_Util::isMarkRecord(vrec[0]) ){
+            rec.isMark = true;
+            rec.regular = initMarkRecord(vrec);
+        }else{
+            rec.isMark = false;
+            rec.regular = initRegularRecord(vrec);
+        }
+        rlog.push_back(rec); 
+    }
+}
 
 // Parse size info for qemu_ld/st record
 std::vector<string> XT_PreProcess::parseMemSizeInfo(std::vector<std::string> &v)

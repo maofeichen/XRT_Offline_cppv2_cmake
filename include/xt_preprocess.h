@@ -1,6 +1,7 @@
 #ifndef XT_PREPROCESS_H
 #define XT_PREPROCESS_H
 
+#include "xt_log.h"
 #include "xt_data.h"
 #include <vector>
 #include <string>
@@ -20,6 +21,8 @@ class XT_PreProcess {
 
   std::vector<Record> convertToRec(std::vector<std::string> &log);
   void convertToRec(std::vector<std::string> &slog,
+                    std::vector<Record>& rlog);
+  void convertToRec(XTLog& olog, 
                     std::vector<Record>& rlog);
 
   std::vector<string> parseMemSizeInfo(std::vector<std::string> &v);

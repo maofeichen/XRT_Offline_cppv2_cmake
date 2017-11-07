@@ -119,9 +119,14 @@ Detect::adpt_detect_cipher()
 {
   cout << "adpt detecting ciphers ..." << endl;
 
+  // uint32_t in_addr    = 0xde911000;
+  // uint32_t in_sz      = 64;
+  // uint32_t out_addr   = 0x804c170;
+  // uint32_t out_sz     = 64;
+
   uint32_t in_addr    = 0xde911000;
-  uint32_t in_sz      = 64;
-  uint32_t out_addr   = 0x804c170;
+  uint32_t in_sz      = 32;
+  uint32_t out_addr   = 0xbfd4464c;
   uint32_t out_sz     = 64;
 
   Propagate prpgt(xt_log_);
@@ -129,17 +134,29 @@ Detect::adpt_detect_cipher()
   vector<t_AliveContinueBuffer> v_cntnsbuf_in;
   vector<t_AliveContinueBuffer> v_cntnsbuf_out;
 
-  adpt_find_cntnsbuf(v_cntnsbuf_in, in_addr, in_sz*8);
+  // adpt_find_cntnsbuf(v_cntnsbuf_in, in_addr, in_sz*8);
+  // adpt_find_cntnsbuf(v_cntnsbuf_out, out_addr, out_sz*8);
+
+  adpt_find_cntnsbuf_by_sz(v_cntnsbuf_in, in_sz*8);
   adpt_find_cntnsbuf(v_cntnsbuf_out, out_addr, out_sz*8);
+  // adpt_find_cntnsbuf_by_sz(v_cntnsbuf_out, out_sz*8);
+
+  cout << "num of input alive bufs:\t" << dec << v_cntnsbuf_in.size() << endl;
+  cout << "num of output alive bufs:\t" << dec << v_cntnsbuf_out.size() << endl;
+  cout << cons::star_sprtr << endl;
 
   // cout << "In Bufs: " << endl;
   // adpt_print_vcntnsbuf(v_cntnsbuf_in);
   // cout << "Out Bufs: " << endl;
   // adpt_print_vcntnsbuf(v_cntnsbuf_out);
 
+  uint32_t dc = 0;
   for(auto iin = v_cntnsbuf_in.begin(); iin != v_cntnsbuf_in.end(); ++iin) {
     // for each input continuous buffer
     for(auto iout = v_cntnsbuf_out.begin(); iout != v_cntnsbuf_out.end(); ++iout) {
+      cout << "detects\t" << dec << dc << "\talive buffers..." << endl;
+      dc++;
+
       cout << "In: " << endl;
       adpt_print_cntnsbuf(*iin);
       cout << "Out: " << endl;
@@ -789,6 +806,20 @@ Detect::adpt_find_cntnsbuf(std::vector<t_AliveContinueBuffer>& v_cntnsbuf,
       }
     }
   } 
+}
+
+
+void 
+Detect::adpt_find_cntnsbuf_by_sz(std::vector<t_AliveContinueBuffer>& v_cntnsbuf,
+                                 uint32_t sz)
+{
+  for(auto it = v_func_cont_buf_.begin(); it != v_func_cont_buf_.end(); ++it) {
+    for(auto it_ab = it->vAliveContinueBuffer.begin(); it_ab != it->vAliveContinueBuffer.end(); ++it_ab) {
+      if(sz == it_ab->size) {
+        v_cntnsbuf.push_back(*it_ab);
+      }
+    }
+  }  
 }
 
 void 

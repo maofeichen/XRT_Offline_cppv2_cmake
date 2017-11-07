@@ -52,3 +52,58 @@ unsigned int XTRecord::XTRecord::getIndex() {return m_index; }
 XTNode XTRecord::getSourceNode() {return m_sourceNode; }
 
 XTNode XTRecord::getDestinationNode() {return m_destinationNode; }
+
+std::string 
+XTRecord::get_str_rec() 
+{
+	if(m_isMark) {
+		string s_index = to_string(m_index);
+		string flag = m_sourceNode.getFlag();
+		string addr = m_sourceNode.getAddr();
+		string val  = m_sourceNode.getVal();
+
+		return flag + '\t' + addr + '\t' + val + '\t' + s_index;
+
+	} else {
+		string flag = m_sourceNode.getFlag();
+
+		if(XT_Util::equal_mark(flag, flag::TCG_QEMU_LD) ) {
+			uint32_t bit_sz = m_sourceNode.getBitSize();
+			string s_bit_sz = to_string(bit_sz);
+
+			string s_index = to_string(m_index);
+
+			string saddr = m_sourceNode.getAddr();
+			string sval  = m_sourceNode.getVal();
+
+			string daddr = m_destinationNode.getAddr();
+			string dval  = m_destinationNode.getVal();
+
+			return flag + '\t' + saddr + '\t' + sval + '\t' + flag + '\t' + daddr + '\t' + dval + '\t' + s_bit_sz + '\t' + s_index;
+		} else if(XT_Util::equal_mark(flag, flag::TCG_QEMU_ST) ) {
+			uint32_t bit_sz = m_destinationNode.getBitSize();
+			string s_bit_sz = to_string(bit_sz);
+
+			string s_index = to_string(m_index);
+
+			string saddr = m_sourceNode.getAddr();
+			string sval  = m_sourceNode.getVal();
+
+			string daddr = m_destinationNode.getAddr();
+			string dval  = m_destinationNode.getVal();
+
+			return flag + '\t' + saddr + '\t' + sval + '\t' + flag + '\t' + daddr + '\t' + dval + '\t' + s_bit_sz + '\t' + s_index;
+		} else {
+			string s_index = to_string(m_index);
+
+			string saddr = m_sourceNode.getAddr();
+			string sval  = m_sourceNode.getVal();
+
+			string daddr = m_destinationNode.getAddr();
+			string dval  = m_destinationNode.getVal();
+
+			return flag + '\t' + saddr + '\t' + sval + '\t' + flag + '\t' + daddr + '\t' + dval + '\t' + s_index;
+		}
+
+	}
+}

@@ -46,13 +46,15 @@ DetectAvalanche::detect()
    	XTLog olog(slog);
    	cout << "total xt log records:\t" << olog.getRecordSize() << endl;
 
-   	// converts string to Record format
-   	XT_PreProcess prprcss;
-   	prprcss.convertToRec(slog, rlog);
-   	cout << "total Record entries:\t" << rlog.size() << endl;
-
    	// no need slog, free
    	slog.clear();
+   	cout << "free string log vector..." << endl;
+
+   	// converts string to Record format
+   	XT_PreProcess prprcss;
+   	// prprcss.convertToRec(slog, rlog);
+   	prprcss.convertToRec(olog, rlog);
+   	cout << "total Record entries:\t" << rlog.size() << endl;
 
    	// init alive buffers from liveness
    	AdptFile adptfl(lp_, bp_, od_, is_dump_, ct_);
@@ -63,8 +65,10 @@ DetectAvalanche::detect()
    	// 	it->print();
    	// }
 
-  Detect dtct(vec_alvfunc, olog, rlog);
-  dtct.adpt_detect_cipher();
+   	// helper_vec_alivefunc(vec_alvfunc);
+
+    Detect dtct(vec_alvfunc, olog, rlog);
+    dtct.adpt_detect_cipher();
 }
 
 void 
@@ -133,3 +137,61 @@ DetectAvalanche::print_valvfunc(std::vector<t_AliveFunctionCall>& vec_alvfunc)
 	}	
 }
 
+void 
+DetectAvalanche::helper_vec_alivefunc(std::vector<t_AliveFunctionCall>& vec_alvfunc)
+{
+	uint32_t addr    = 0xbfd4464c;
+ 	uint32_t sz;
+
+	vector<t_AliveContinueBuffer> v_cntnsbuf;
+
+	sz = 64;	
+ 	adpt_find_cntnsbuf(vec_alvfunc, v_cntnsbuf, addr, sz*8);
+ 	cout << "total alive buffers with addr 0xbfd4464c size 64 bytes:\t" << v_cntnsbuf.size() << endl;
+ 
+ 	sz = 64;	
+ 	adpt_find_cntnsbuf_by_sz(vec_alvfunc, v_cntnsbuf, sz*8);
+ 	cout << "total alive buffers with size 64 bytes:\t" << v_cntnsbuf.size() << endl;
+
+ 	sz = 32;	
+ 	adpt_find_cntnsbuf_by_sz(vec_alvfunc, v_cntnsbuf, sz*8);
+ 	cout << "total alive buffers with size 32 bytes:\t" << v_cntnsbuf.size() << endl;	
+
+  	sz = 24;	
+ 	adpt_find_cntnsbuf_by_sz(vec_alvfunc, v_cntnsbuf, sz*8);
+ 	cout << "total alive buffers with size 24 bytes:\t" << v_cntnsbuf.size() << endl;			
+
+ 	sz = 16;	
+ 	adpt_find_cntnsbuf_by_sz(vec_alvfunc, v_cntnsbuf, sz*8);
+ 	cout << "total alive buffers with size 16 bytes:\t" << v_cntnsbuf.size() << endl;	
+}
+
+void 
+DetectAvalanche::adpt_find_cntnsbuf(std::vector<t_AliveFunctionCall>& vec_alvfunc,
+									std::vector<t_AliveContinueBuffer>& v_cntnsbuf,
+                           			uint32_t addr,
+                           			uint32_t sz)
+{
+  for(auto it = vec_alvfunc.begin(); it != vec_alvfunc.end(); ++it) {
+    for(auto it_ab = it->vAliveContinueBuffer.begin(); it_ab != it->vAliveContinueBuffer.end(); ++it_ab) {
+      if(addr == it_ab->beginAddress && sz == it_ab->size) {
+        v_cntnsbuf.push_back(*it_ab);
+      }
+    }
+  } 
+}
+
+
+void 
+DetectAvalanche::adpt_find_cntnsbuf_by_sz(std::vector<t_AliveFunctionCall>& vec_alvfunc,
+										  std::vector<t_AliveContinueBuffer>& v_cntnsbuf,
+                                 		  uint32_t sz)
+{
+  for(auto it = vec_alvfunc.begin(); it != vec_alvfunc.end(); ++it) {
+    for(auto it_ab = it->vAliveContinueBuffer.begin(); it_ab != it->vAliveContinueBuffer.end(); ++it_ab) {
+      if(sz == it_ab->size) {
+        v_cntnsbuf.push_back(*it_ab);
+      }
+    }
+  }  
+}

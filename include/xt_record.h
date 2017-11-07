@@ -1,6 +1,7 @@
 #ifndef XT_RECORD_H
 #define XT_RECORD_H
 
+#include <string>
 #include "xt_node.h"
 
 class XTRecord
@@ -14,6 +15,8 @@ public:
 
 	XTNode getSourceNode();
 	XTNode getDestinationNode();
+
+	std::string get_str_rec();
 
 private:
 	bool m_isMark;
