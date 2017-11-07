@@ -10,6 +10,7 @@
 #include "adpt_cons.h"
 
 #include <algorithm>
+#include <ctime>
 #include <map>
 #include <string>
 #include <iostream>
@@ -351,9 +352,9 @@ Detect::gen_in_propagate_byte(t_AliveContinueBuffer &in, Propagate &propagate)
     return in_vec_propagate_byte;
 }
 
-vector<vector<Detect::propagate_byte_> > Detect::gen_in_prpgt_byte(
-    t_AliveContinueBuffer &in,
-    Propagate &propagate)
+vector<vector<Detect::propagate_byte_> > 
+Detect::gen_in_prpgt_byte(t_AliveContinueBuffer &in,
+                          Propagate &propagate)
 {
   vector< vector<propagate_byte_> > v_in_prpgt_byte;
 
@@ -365,19 +366,31 @@ vector<vector<Detect::propagate_byte_> > Detect::gen_in_prpgt_byte(
          << endl;
   }
 
+  double totalt = 0;
+
   for(int byte_idx = 0; byte_idx < v_taint_src.size(); byte_idx++) {
     unordered_set<Node, NodeHash> multi_prpgt_res;
 
-    for(int node_idx = 0; node_idx < v_taint_src[byte_idx].v_multi_src.size()
-        ; node_idx++) {
+    for(int node_idx = 0; 
+        node_idx < v_taint_src[byte_idx].v_multi_src.size(); node_idx++) {
       uint32_t curr_node_idx = v_taint_src[byte_idx].v_multi_src[node_idx].node_idx;
       uint8_t curr_pos       = v_taint_src[byte_idx].v_multi_src[node_idx].pos;
 
       XTNode node = get_mem_node(curr_node_idx);
       // NodePropagate taint_src = init_taint_source(node, log_rec_);
       NodePropagate taint_src = init_taint_source(node);
+
+      // set a timer
+      clock_t start;
+      double duration;
+      start = clock();
+
       unordered_set<Node, NodeHash> prpgt_res;
       prpgt_res = propagate.getPropagateResult(taint_src, log_rec_, curr_pos);
+
+      duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+      totalt += duration;
+      cout << "search propagation time: " << duration << " s" << endl;
 
       merge_propagate_res(prpgt_res, multi_prpgt_res);
     }
@@ -386,6 +399,8 @@ vector<vector<Detect::propagate_byte_> > Detect::gen_in_prpgt_byte(
     v_prpgt_byte = convert_propagate_byte(multi_prpgt_res);
     v_in_prpgt_byte.push_back(v_prpgt_byte);
   }
+
+  cout << "search propagation total time: " << totalt << " s" << endl;
 
   return v_in_prpgt_byte;
 }
