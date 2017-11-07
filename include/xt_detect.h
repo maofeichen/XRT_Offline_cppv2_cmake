@@ -14,12 +14,15 @@
 
 class Detect {
  public:
+  Detect() {};
   Detect(std::vector<t_AliveFunctionCall> v_func_cont_buf,
          XTLog &xt_log,
          std::vector<Record> log_rec);
 
   void detect_cipher();
   void adpt_detect_cipher();
+  void adpt_detect_cipher(std::vector<t_AliveFunctionCall>& v_alvfunc,
+                          XTLog &xtlog);
  private:
   XTLog xt_log_;
   std::vector<t_AliveFunctionCall> v_func_cont_buf_;
@@ -113,10 +116,12 @@ class Detect {
                             t_AliveContinueBuffer &out,
                             Propagate &propagate);
 
-  void adpt_find_cntnsbuf(std::vector<t_AliveContinueBuffer>& v_cntnsbuf,
+  void adpt_find_cntnsbuf(std::vector<t_AliveFunctionCall>& v_alvfunc,
+                          std::vector<t_AliveContinueBuffer>& v_cntnsbuf,
                           uint32_t addr,
                           uint32_t sz);
-  void adpt_find_cntnsbuf_by_sz(std::vector<t_AliveContinueBuffer>& v_cntnsbuf,
+  void adpt_find_cntnsbuf_by_sz(std::vector<t_AliveFunctionCall>& v_alvfunc,
+                                std::vector<t_AliveContinueBuffer>& v_cntnsbuf,
                                 uint32_t sz);
   
   void adpt_print_cntnsbuf(t_AliveContinueBuffer& buf);

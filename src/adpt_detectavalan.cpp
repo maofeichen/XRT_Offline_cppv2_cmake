@@ -51,7 +51,7 @@ DetectAvalanche::detect()
    	cout << "free string log vector..." << endl;
 
    	// converts string to Record format
-   	XT_PreProcess prprcss;
+   	// XT_PreProcess prprcss;
    	// prprcss.convertToRec(slog, rlog);
    	// prprcss.convertToRec(olog, rlog);
    	// cout << "total Record entries:\t" << rlog.size() << endl;
@@ -69,6 +69,8 @@ DetectAvalanche::detect()
 
     Detect dtct(vec_alvfunc, olog, rlog);
     dtct.adpt_detect_cipher();
+    // Detect dtct;
+    // dtct.adpt_detect_cipher(vec_alvfunc, olog);
 }
 
 void 
