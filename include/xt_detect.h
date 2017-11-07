@@ -104,6 +104,7 @@ class Detect {
   // Given a node in log, convert it to NodePropagate format as taint source
   // for taint propagation search
   NodePropagate init_taint_source(XTNode &node, std::vector<Record> &log_rec);
+  NodePropagate init_taint_source(XTNode &node);
 
   uint8_t compute_byte_pos(uint32_t addr, XTNode &node);
 

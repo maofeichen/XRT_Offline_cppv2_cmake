@@ -53,8 +53,8 @@ DetectAvalanche::detect()
    	// converts string to Record format
    	XT_PreProcess prprcss;
    	// prprcss.convertToRec(slog, rlog);
-   	prprcss.convertToRec(olog, rlog);
-   	cout << "total Record entries:\t" << rlog.size() << endl;
+   	// prprcss.convertToRec(olog, rlog);
+   	// cout << "total Record entries:\t" << rlog.size() << endl;
 
    	// init alive buffers from liveness
    	AdptFile adptfl(lp_, bp_, od_, is_dump_, ct_);

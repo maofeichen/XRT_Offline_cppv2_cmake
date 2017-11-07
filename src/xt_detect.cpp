@@ -119,26 +119,26 @@ Detect::adpt_detect_cipher()
 {
   cout << "adpt detecting ciphers ..." << endl;
 
-  // uint32_t in_addr    = 0xde911000;
-  // uint32_t in_sz      = 64;
-  // uint32_t out_addr   = 0x804c170;
-  // uint32_t out_sz     = 64;
-
   uint32_t in_addr    = 0xde911000;
-  uint32_t in_sz      = 32;
-  uint32_t out_addr   = 0xbfd4464c;
+  uint32_t in_sz      = 64;
+  uint32_t out_addr   = 0x804c170;
   uint32_t out_sz     = 64;
+
+  // uint32_t in_addr    = 0xde911000;
+  // uint32_t in_sz      = 32;
+  // uint32_t out_addr   = 0xbfd4464c;
+  // uint32_t out_sz     = 64;
 
   Propagate prpgt(xt_log_);
 
   vector<t_AliveContinueBuffer> v_cntnsbuf_in;
   vector<t_AliveContinueBuffer> v_cntnsbuf_out;
 
-  // adpt_find_cntnsbuf(v_cntnsbuf_in, in_addr, in_sz*8);
-  // adpt_find_cntnsbuf(v_cntnsbuf_out, out_addr, out_sz*8);
-
-  adpt_find_cntnsbuf_by_sz(v_cntnsbuf_in, in_sz*8);
+  adpt_find_cntnsbuf(v_cntnsbuf_in, in_addr, in_sz*8);
   adpt_find_cntnsbuf(v_cntnsbuf_out, out_addr, out_sz*8);
+
+  // adpt_find_cntnsbuf_by_sz(v_cntnsbuf_in, in_sz*8);
+  // adpt_find_cntnsbuf(v_cntnsbuf_out, out_addr, out_sz*8);
   // adpt_find_cntnsbuf_by_sz(v_cntnsbuf_out, out_sz*8);
 
   cout << "num of input alive bufs:\t" << dec << v_cntnsbuf_in.size() << endl;
@@ -252,7 +252,8 @@ Detect::comp_multi_src_propagate_res(unsigned int multi_src_interval,
 
     for(uint32_t i = 0; i < multi_src_interval; i++){
         XTNode node = get_mem_node(*it_multi_src_idx);
-        NodePropagate taint_src = init_taint_source(node, log_rec_);
+        // NodePropagate taint_src = init_taint_source(node, log_rec_);
+        NodePropagate taint_src = init_taint_source(node);
         propagate_res = propagate.getPropagateResult(taint_src, log_rec_, byte_pos);
         merge_propagate_res(propagate_res, multi_propagate_res);
 
@@ -373,8 +374,8 @@ vector<vector<Detect::propagate_byte_> > Detect::gen_in_prpgt_byte(
       uint8_t curr_pos       = v_taint_src[byte_idx].v_multi_src[node_idx].pos;
 
       XTNode node = get_mem_node(curr_node_idx);
-      NodePropagate taint_src = init_taint_source(node, log_rec_);
-
+      // NodePropagate taint_src = init_taint_source(node, log_rec_);
+      NodePropagate taint_src = init_taint_source(node);
       unordered_set<Node, NodeHash> prpgt_res;
       prpgt_res = propagate.getPropagateResult(taint_src, log_rec_, curr_pos);
 
@@ -643,6 +644,39 @@ Detect::init_taint_source(XTNode &node, std::vector<Record> &log_rec)
     src.n.sz        = node.getBitSize();
 
     return src;
+}
+
+NodePropagate 
+Detect::init_taint_source(XTNode &node)
+{
+    NodePropagate src;
+
+    string src_flag = node.getFlag();
+    if(XT_Util::equal_mark(src_flag, flag::TCG_QEMU_LD) ){
+        src.isSrc = true;
+        src.id    = node.getIndex() * 2;
+    }else if(XT_Util::equal_mark(src_flag, flag::TCG_QEMU_ST) ){
+        src.isSrc = false;
+        src.id    = node.getIndex() * 2 + 1;
+    }else{
+        cout << "error: init_taint_source: given node is neither load or store..."
+                << endl;
+    }
+
+    src.parentId    = 0;
+    src.layer       = 0;
+    unsigned long rec_idx = node.getIndex();
+    src.pos         = rec_idx;
+    // src.insnAddr    = get_insn_addr(rec_idx, log_rec_);
+    // no more need this
+    src.insnAddr    = "";
+    src.n.flag      = node.getFlag();
+    src.n.addr      = node.getAddr();
+    src.n.val       = node.getVal();
+    src.n.i_addr    = node.getIntAddr();
+    src.n.sz        = node.getBitSize();
+
+    return src; 
 }
 
 uint8_t Detect::compute_byte_pos(uint32_t addr, XTNode &node)
