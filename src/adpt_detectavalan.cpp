@@ -91,6 +91,7 @@ DetectAvalanche::to_vec_alvfunc(list<Alivefunc>& lst_alvfunc,
 
 			for(auto it_rec = it_ab->get_recs().begin(); it_rec != it_ab -> get_recs().end(); ++it_rec) {
 				uint64_t recidx = get_index(*it_rec);
+				recidx--;	// offset by one, results in seg fault
 				alvbuf.vNodeIndex.push_back(recidx);
 			}
 

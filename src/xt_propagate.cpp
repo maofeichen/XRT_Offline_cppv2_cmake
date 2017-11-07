@@ -461,7 +461,7 @@ void Propagate::handle_destinate_node_mem(XTNode &xt_node,
 
                 // Inserts to propagate result
                 // Inserts based on the taint info, but now insert all
-                cout << "propagate to: " << hex << i_byte_addr << " val: " << byte_val << endl;
+                // cout << "propagate to: " << hex << i_byte_addr << " val: " << byte_val << endl;
 
                 // Debug
                 if(i_byte_addr == 0xbffff10f) {

@@ -379,11 +379,13 @@ void BlockDetect::detect_block_size_with_val(
 
     uint32_t i = b_begin_byte;
     for (; i < b_end_byte; i++) {
-      common.disp_range_array();
-      prev_common.disp_range_array();
+      // mc
+      // common.disp_range_array();
+      // prev_common.disp_range_array();
 
-      common.disp_byte_val_map_array();
-      prev_common.disp_byte_val_map_array();
+      // mc
+      // common.disp_byte_val_map_array();
+      // prev_common.disp_byte_val_map_array();
 
       if(accumu_b_sz == 0) {
         // Handles block begins
@@ -516,14 +518,17 @@ void BlockDetect::detect_block_size_handling_last_block(RangeArray &input_blocks
     uint32_t i = b_begin_byte;
     for (; i < b_end_byte; i++) {
       if(i == 16) {
-        cout << "i is 16" << endl;
+        // mc
+        // cout << "i is 16" << endl;
       }
 
-      common.disp_range_array();
-      prev_common.disp_range_array();
+      // mc
+      // common.disp_range_array();
+      // prev_common.disp_range_array();
 
-      common.disp_byte_val_map_array();
-      prev_common.disp_byte_val_map_array();
+      // mc
+      // common.disp_byte_val_map_array();
+      // prev_common.disp_byte_val_map_array();
 
       if(accumu_b_sz == 0) {
         // Handles block begins
@@ -533,7 +538,8 @@ void BlockDetect::detect_block_size_handling_last_block(RangeArray &input_blocks
 
         if(!is_init ||
             common.get_size() == 0) {
-          cout << "Potential block first two bytes have no common." << endl;
+          // mc
+          // cout << "Potential block first two bytes have no common." << endl;
           b_begin_byte = i;
           buf_sz--;
           break;
@@ -588,8 +594,9 @@ void BlockDetect::detect_block_size_handling_last_block(RangeArray &input_blocks
 //    last_common = prev_common;
   } // end while
 
-  cout << "curr begin byte: " << b_begin_byte
-       << " buf size: " << buf_sz << endl;
+  // mc
+  // cout << "curr begin byte: " << b_begin_byte
+  //      << " buf size: " << buf_sz << endl;
 
   for(int i = b_begin_byte; i < b_begin_byte+buf_sz; i++) {
     RangeArray common(out_begin_addr_, out_len_);
@@ -599,13 +606,15 @@ void BlockDetect::detect_block_size_handling_last_block(RangeArray &input_blocks
       continue;
     }
 
-    cout << "byte addr: " << hex << byte->get_taint_src() << endl;
-    cout << "before intersecting current byte: " << endl;
-    common.disp_range_array();
+    // mc
+    // cout << "byte addr: " << hex << byte->get_taint_src() << endl;
+    // cout << "before intersecting current byte: " << endl;
+    // common.disp_range_array();
 
     common.get_common_range_with_val(*byte->get_taint_propagate());
-    cout << "after intersecting current byte: " << endl;
-    common.disp_range_array();
+    // mc
+    // cout << "after intersecting current byte: " << endl;
+    // common.disp_range_array();
   }
 
   // save the last block if any
@@ -636,8 +645,8 @@ bool BlockDetect::init_block(RangeArray &common,
     return false;
   }
 
-  a->get_taint_propagate()->disp_range_array();
-  b->get_taint_propagate()->disp_range_array();
+  // a->get_taint_propagate()->disp_range_array();
+  // b->get_taint_propagate()->disp_range_array();
 
   common.get_common_range_with_val(*a->get_taint_propagate() );
   if(common.get_size() == 0) {
@@ -669,15 +678,17 @@ bool BlockDetect::extend_block(RangeArray &common,
     return false;
   }
 
-  cout << "extend block: byte addr: " << hex
-      << byte->get_taint_src() << endl;
-  cout << "before intersecting current byte: " << endl;
-  common.disp_range_array();
+  // mc
+  // cout << "extend block: byte addr: " << hex
+  //     << byte->get_taint_src() << endl;
+  // cout << "before intersecting current byte: " << endl;
+  // common.disp_range_array();
 
   common.get_common_range_with_val(*byte->get_taint_propagate() );
 
-  cout << "after intersecting current byte: " << endl;
-  common.disp_range_array();
+  // mc
+  // cout << "after intersecting current byte: " << endl;
+  // common.disp_range_array();
 
   return true;
 }
@@ -698,8 +709,9 @@ bool BlockDetect::is_block_end(RangeArray &common,
     // return false;
   }
 
-  prev_common.disp_range_array();
-  common.disp_range_array();
+  // mc
+  // prev_common.disp_range_array();
+  // common.disp_range_array();
 
   // Determines if 1st range of prev_common and common are identical,
   // to determine if it same block
@@ -796,12 +808,14 @@ bool BlockDetect::store_block(RangeArray &input_blocks,
     }
     input_block_propa.push_back(RangeArraySPtr(propa_ra) );
 
-    propa_ra->disp_range_array();
-    propa_ra->disp_byte_val_map_array();
+    // mc
+    // propa_ra->disp_range_array();
+    // propa_ra->disp_byte_val_map_array();
 
     for(uint32_t i=0; i < input_block_propa.size(); i++) {
-      input_block_propa[i]->disp_range_array();
-      input_block_propa[i]->disp_byte_val_map_array();
+      // mc
+      // input_block_propa[i]->disp_range_array();
+      // input_block_propa[i]->disp_byte_val_map_array();
     }
 
     return true;

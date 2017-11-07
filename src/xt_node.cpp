@@ -1,3 +1,4 @@
+#include <iostream>
 #include "xt_flag.h"
 #include "xt_constant.h"
 #include "xt_node.h"
@@ -55,3 +56,11 @@ unsigned int XTNode::getIntAddr(){return m_intAddr; }
 unsigned int XTNode::getBitSize(){return m_bitSize; }
 
 unsigned int XTNode::getByteSize(){return getBitSize() / BIT_TO_BYTE; }	
+
+void
+XTNode::print()
+{
+  cout << "flag: " << m_flag
+       << " - addr: " << m_addr
+       << " - val: " << m_val << endl;
+}

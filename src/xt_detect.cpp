@@ -146,6 +146,7 @@ Detect::adpt_detect_cipher()
       adpt_print_cntnsbuf(*iout);
       
       detect_cipher_in_out(*iin, *iout, prpgt);
+      cout << cons::star_sprtr << endl;
     }
   }
 }
@@ -561,15 +562,15 @@ vector<Detect::Multi_Taint_Source_> Detect::gen_taint_source(const t_AliveContin
   }
 
   for(int i = 0; i < v_taint_src.size(); i++) {
-    cout << "source addr: " << hex << v_taint_src[i].addr << endl;
+    // cout << "source addr: " << hex << v_taint_src[i].addr << endl;
     for(int j = 0; j < v_taint_src[i].v_multi_src.size(); j++) {
       uint32_t node_idx = v_taint_src[i].v_multi_src[j].node_idx;
       uint8_t pos = v_taint_src[i].v_multi_src[j].pos;
 
       XTNode node = get_mem_node(node_idx);
-      cout << "src node addr: " << hex << node.getIntAddr()
-           << " size: " << dec << node.getByteSize()
-           << " pos: " <<  dec << unsigned(pos) << endl;
+      // cout << "src node addr: " << hex << node.getIntAddr()
+      //      << " size: " << dec << node.getByteSize()
+      //      << " pos: " <<  dec << unsigned(pos) << endl;
     }
   }
   return v_taint_src;
@@ -582,6 +583,7 @@ XTNode Detect::get_mem_node(unsigned long index)
     string src_flag;
 
     src_node = rec.getSourceNode();
+    // src_node.print();
     src_flag = src_node.getFlag();
     if(XT_Util::equal_mark(src_flag, flag::TCG_QEMU_LD) ){
         node = src_node;
@@ -692,6 +694,7 @@ bool Detect::detect_cipher_in_out(t_AliveContinueBuffer &in,
 //      v_in_taint_propagate[i]->get_taint_propagate()->at(j)
 //          ->disp_byte_val_map();
     }
+    cout << cons::dash_sprtr << endl;
   }
 
   RangeArray input_blocks;
@@ -700,15 +703,22 @@ bool Detect::detect_cipher_in_out(t_AliveContinueBuffer &in,
                              out.beginAddress, out.size / 8);
   block_detector.detect_block_size(input_blocks, input_block_propa,
                                    v_in_taint_propagate);
+
+  cout << cons::dash_sprtr << endl;
   cout << "block detection result: " << endl;
   input_blocks.disp_range_array();
+  
+  cout << cons::dash_sprtr << endl;
   cout << "blocks propagated ranges: " << endl;
   for(uint32_t i = 0; i < input_block_propa.size(); i++) {
     cout << i+1 << "\tblock ->" << endl;
     input_block_propa[i]->disp_range_array();
+    cout << cons::dash_sprtr << endl;
   }
 
   bool is_det = false;
+
+  /* mc
   CFBDetector det_cfb;
   CBCDetector det_cbc(out.beginAddress, out.size / 8);
   is_det = det_cfb.analyze_mode(input_blocks, input_block_propa,
@@ -741,6 +751,7 @@ bool Detect::detect_cipher_in_out(t_AliveContinueBuffer &in,
 //  is_det = block_detector.detect_mode_type(input_blocks, input_block_propa,
 //                                           v_in_taint_propagate);
 
+  */
   return is_det;
 
   /*

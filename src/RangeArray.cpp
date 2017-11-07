@@ -562,7 +562,8 @@ void RangeArray::reset()
 {
 //  cout << "num used array: " << array_used_ << endl;
   for(int i = 0; i < array_used_; i++) {
-    ref_rray_[i]->disp_range();
+    // mc
+    // ref_rray_[i]->disp_range();
   }
 
   for (int i = 0; i < array_used_; i++) {

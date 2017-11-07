@@ -30,5 +30,7 @@ class XTNode
  	unsigned int getIntAddr();
  	unsigned int getBitSize();
  	unsigned int getByteSize();	
+
+ 	void print();
  }; 
 #endif
