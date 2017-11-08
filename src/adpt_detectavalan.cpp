@@ -42,6 +42,7 @@ DetectAvalanche::detect()
 
    	XT_File fl(lp_);
    	fl.read(slog);
+	cout << "total string log records:\t" << slog.size() << endl;	
 
    	XTLog olog(slog);
    	cout << "total xt log records:\t" << olog.getRecordSize() << endl;

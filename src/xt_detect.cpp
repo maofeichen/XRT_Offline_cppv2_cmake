@@ -120,15 +120,15 @@ Detect::adpt_detect_cipher()
 {
   cout << "adpt detecting ciphers ..." << endl;
 
-  uint32_t in_addr    = 0xde911000;
-  uint32_t in_sz      = 64;
-  uint32_t out_addr   = 0x804c170;
-  uint32_t out_sz     = 64;
-
   // uint32_t in_addr    = 0xde911000;
-  // uint32_t in_sz      = 32;
-  // uint32_t out_addr   = 0xbfd4464c;
+  // uint32_t in_sz      = 64;
+  // uint32_t out_addr   = 0x804c170;
   // uint32_t out_sz     = 64;
+
+  uint32_t in_addr    = 0xde911000;
+  uint32_t in_sz      = 32;
+  uint32_t out_addr   = 0xbfd4464c;
+  uint32_t out_sz     = 64;
 
   Propagate prpgt(xt_log_);
   // Propagate prpgt(xtlog);
@@ -136,11 +136,11 @@ Detect::adpt_detect_cipher()
   vector<t_AliveContinueBuffer> v_cntnsbuf_in;
   vector<t_AliveContinueBuffer> v_cntnsbuf_out;
 
-  adpt_find_cntnsbuf(v_func_cont_buf_, v_cntnsbuf_in, in_addr, in_sz*8);
-  adpt_find_cntnsbuf(v_func_cont_buf_, v_cntnsbuf_out, out_addr, out_sz*8);
-
-  // adpt_find_cntnsbuf_by_sz(v_func_cont_buf_, v_cntnsbuf_in, in_sz*8);
+  // adpt_find_cntnsbuf(v_func_cont_buf_, v_cntnsbuf_in, in_addr, in_sz*8);
   // adpt_find_cntnsbuf(v_func_cont_buf_, v_cntnsbuf_out, out_addr, out_sz*8);
+
+  adpt_find_cntnsbuf_by_sz(v_func_cont_buf_, v_cntnsbuf_in, in_sz*8);
+  adpt_find_cntnsbuf(v_func_cont_buf_, v_cntnsbuf_out, out_addr, out_sz*8);
   // adpt_find_cntnsbuf_by_sz(v_cntnsbuf_out, out_sz*8);
 
   cout << "num of input alive bufs:\t" << dec << v_cntnsbuf_in.size() << endl;
@@ -158,6 +158,11 @@ Detect::adpt_detect_cipher()
     for(auto iout = v_cntnsbuf_out.begin(); iout != v_cntnsbuf_out.end(); ++iout) {
       cout << "detects\t" << dec << dc << "\talive buffers..." << endl;
       dc++;
+
+      if(dc <= 15) {
+        cout << "skip..." << endl;
+        continue;
+      }
 
       cout << "In: " << endl;
       adpt_print_cntnsbuf(*iin);
@@ -423,13 +428,19 @@ Detect::gen_in_prpgt_byte(t_AliveContinueBuffer &in,
          << endl;
   }
 
+  // timer
   double totalt = 0;
 
   for(int byte_idx = 0; byte_idx < v_taint_src.size(); byte_idx++) {
     unordered_set<Node, NodeHash> multi_prpgt_res;
 
+    // set a timer
+    clock_t start;
+    double duration;
+    start = clock();
+
     for(int node_idx = 0; 
-        node_idx < v_taint_src[byte_idx].v_multi_src.size(); node_idx++) {
+      node_idx < v_taint_src[byte_idx].v_multi_src.size(); node_idx++) {
       uint32_t curr_node_idx = v_taint_src[byte_idx].v_multi_src[node_idx].node_idx;
       uint8_t curr_pos       = v_taint_src[byte_idx].v_multi_src[node_idx].pos;
 
@@ -437,27 +448,23 @@ Detect::gen_in_prpgt_byte(t_AliveContinueBuffer &in,
       // NodePropagate taint_src = init_taint_source(node, log_rec_);
       NodePropagate taint_src = init_taint_source(node);
 
-      // set a timer
-      clock_t start;
-      double duration;
-      start = clock();
-
       unordered_set<Node, NodeHash> prpgt_res;
       prpgt_res = propagate.getPropagateResult(taint_src, log_rec_, curr_pos);
 
-      duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-      totalt += duration;
-      cout << "search propagation time: " << duration << " s" << endl;
-
       merge_propagate_res(prpgt_res, multi_prpgt_res);
     }
+
+    duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+    totalt += duration;
+    cout << dec << byte_idx 
+         << "\t byte search propagation time: " << duration << "s" << endl;
 
     vector<propagate_byte_> v_prpgt_byte;
     v_prpgt_byte = convert_propagate_byte(multi_prpgt_res);
     v_in_prpgt_byte.push_back(v_prpgt_byte);
   }
 
-  cout << "search propagation total time: " << totalt << " s" << endl;
+  cout << "total search propagation time: " << totalt << "s" << endl;
 
   return v_in_prpgt_byte;
 }

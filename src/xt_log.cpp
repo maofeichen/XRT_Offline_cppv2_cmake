@@ -1,4 +1,6 @@
+#include <iostream>
 #include <string>
+
 #include "xt_flag.h"
 #include "xt_log.h"
 #include "xt_node.h"

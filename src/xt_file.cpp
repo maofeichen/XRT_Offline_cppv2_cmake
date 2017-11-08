@@ -50,16 +50,18 @@ void XT_File::read(std::vector<std::string>& log)
 
         getline(xt_file, prev_line);
         while (getline(xt_file, curr_line)) {
-            string prev_flag = prev_line.substr(0,2);
-            string curr_flag = curr_line.substr(0,2);
-            if(XT_Util::equal_mark(curr_flag, flag::XT_INSN_ADDR)
-                && XT_Util::equal_mark(prev_flag, flag::XT_INSN_ADDR) ) {
 
-            } else {
-                log.push_back(curr_line);
-            }
+            // string prev_flag = prev_line.substr(0,2);
+            // string curr_flag = curr_line.substr(0,2);
+            // if(XT_Util::equal_mark(curr_flag, flag::XT_INSN_ADDR)
+            //     && XT_Util::equal_mark(prev_flag, flag::XT_INSN_ADDR) ) {
 
-            prev_line = curr_line;
+            // } else {
+            //     log.push_back(curr_line);
+            // }
+
+            // prev_line = curr_line;
+            log.push_back(curr_line);
             num_line++;
         }
         cout << "total log entries:\t" << num_line << endl;
