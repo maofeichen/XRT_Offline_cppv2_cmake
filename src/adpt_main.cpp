@@ -46,16 +46,16 @@ main(int argc, char *argv[]) {
      && vm.count("output-drec") ){
 
     string lp = vm["input-log"].as< string >();
-    cout << "Input Log: \t" << lp << endl;
+    // cout << "Input Log: \t" << lp << endl;
 
-	string bp = vm["input-buf"].as< string >();
-    cout << "Input buf: \t" << bp << endl;
+	  string bp = vm["input-buf"].as< string >();
+    // cout << "Input buf: \t" << bp << endl;
 
     string od = vm["output-drec"].as< string >();
-    cout << "Output Drec: \t" << od << endl;
+    // cout << "Output Drec: \t" << od << endl;
 
     bool is_dump = vm["dump-result"].as< bool >();
-    cout << "Is Dump: \t" << is_dump << endl;
+    // cout << "Is Dump: \t" << is_dump << endl;
 
     string ct = get_time();
 
